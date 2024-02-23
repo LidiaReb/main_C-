@@ -11,6 +11,20 @@ void liner_finer(int long long *arr, int long long N, int long long a){
     }
 }
 
+void binary_finder(int long long *arr, int long long N, int long long a){
+    int long long l = 0, r = N-1;
+    while (r > l) {
+        int long long m = (l+r)/2;
+        if (arr[m] < a) {
+            l = m + 1;
+        } else if (arr[m] > a) {
+            r = m - 1;
+        } else {
+            break;
+        }
+    }
+}
+
 void clean_file(std::string name){
     std::ofstream out;
     out.open(name);
@@ -19,7 +33,16 @@ void clean_file(std::string name){
 }
 
 void sort(int long long *arr, int long long N){
-    std::cout << "";
+for(int long long i = 1; i != N; ++i){
+	for(int long long j = 0; j != N-i; ++j){
+		if(arr[j] < arr[j+1]){
+			int long long temp = arr[j];
+			arr[j] = arr[j+1];
+			arr[j+1] = temp;
+		}
+	}
+}    
+
 }
 
 void experiment_of_function(int long long N, std::string name, bool arr_sort, bool worst){
@@ -39,9 +62,9 @@ void experiment_of_function(int long long N, std::string name, bool arr_sort, bo
     std:: uniform_int_distribution <unsigned long long> dstr0(0, N-1);
     for (unsigned counter = 100; counter != 0; --counter){ // делаем по 100 измерений времени
         auto begin = std:: chrono :: steady_clock :: now();
-        for (unsigned cnt = 1000; cnt != 0; --cnt)
+        for (unsigned cnt = 10000000; cnt != 0; --cnt)
         // ========= функция ===================================
-            liner_finer(arr, N, arr[dstr0(rng0)]+ worst*3*1e10);
+            binary_finder(arr, N, arr[dstr0(rng0)]+ worst*3*1e10);
         // =======================================================
         auto end = std:: chrono :: steady_clock :: now();
         auto time_span = std:: chrono :: duration_cast<std:: chrono :: milliseconds >(end - begin);
@@ -57,8 +80,8 @@ void experiment_of_function(int long long N, std::string name, bool arr_sort, bo
 
 int main() {
 
-int long long  N_0 = 1e4; // cоздаём массив длины N
-std::string name = "line_worst.txt";
+int long long  N_0 = 1e3; // cоздаём массив длины N
+std::string name = "binary_worst.txt";
 
 clean_file(name);
 std::ofstream out;
@@ -66,9 +89,12 @@ out.open(name, std::ios::app);
 out << "N;time" << std:: endl;
 out.close(); 
 
-for(int i=0; i != 10; ++i){
-    int long long  N = N_0*(i+1); 
-    experiment_of_function(N, name, 0, 1);
+int long long  N = N_0;
+
+for(int i=0; i != 10; ++i){ 
+    std::cout << "Начало шага " << i << std::endl;
+    experiment_of_function(N, name, 1, 1);
+    N += 1e3;
 }
 
 return 0;
