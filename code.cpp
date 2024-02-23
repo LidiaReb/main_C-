@@ -25,6 +25,29 @@ void binary_finder(int long long *arr, int long long N, int long long a){
     }
 }
 
+void sum(int long long *arr, int long long N, int long long a){
+    for(int long long i=0; i != N; ++i){
+        for(int long long j=0; j != N; ++j){
+            if(arr[i]+arr[j] == a){
+                break;
+            }
+        }
+    }
+}
+
+void sum_sort(int long long *arr, int long long N, int long long a){
+    int long long l = 0, r = N-1; 
+    while (r > l){
+        if (arr[l] + arr[r] < a) {
+            l += 1;
+        } else if (arr[l] + arr[r] > a) {
+            r -= 1;
+        } else {
+            break;
+        }
+    }
+}
+
 void clean_file(std::string name){
     std::ofstream out;
     out.open(name);
@@ -60,11 +83,11 @@ void experiment_of_function(int long long N, std::string name, bool arr_sort, bo
 
     std:: default_random_engine rng0(2*seed);
     std:: uniform_int_distribution <unsigned long long> dstr0(0, N-1);
-    for (unsigned counter = 100; counter != 0; --counter){ // делаем по 100 измерений времени
+    for (unsigned counter = 100; counter != 0; --counter){ // делаем по 10 измерений времени
         auto begin = std:: chrono :: steady_clock :: now();
-        for (unsigned cnt = 10000000; cnt != 0; --cnt)
+        for (unsigned cnt = 10000; cnt != 0; --cnt)
         // ========= функция ===================================
-            binary_finder(arr, N, arr[dstr0(rng0)]+ worst*3*1e10);
+            sum_sort(arr, N, arr[dstr0(rng0)] + arr[dstr0(rng0)] + worst*3*1e10);
         // =======================================================
         auto end = std:: chrono :: steady_clock :: now();
         auto time_span = std:: chrono :: duration_cast<std:: chrono :: milliseconds >(end - begin);
@@ -80,8 +103,8 @@ void experiment_of_function(int long long N, std::string name, bool arr_sort, bo
 
 int main() {
 
-int long long  N_0 = 1e3; // cоздаём массив длины N
-std::string name = "binary_worst.txt";
+int long long  N_0 = 1e4; // cоздаём массив длины N
+std::string name = "sum_sort.txt";
 
 clean_file(name);
 std::ofstream out;
@@ -94,7 +117,7 @@ int long long  N = N_0;
 for(int i=0; i != 10; ++i){ 
     std::cout << "Начало шага " << i << std::endl;
     experiment_of_function(N, name, 1, 1);
-    N += 1e3;
+    N += N_0;
 }
 
 return 0;
