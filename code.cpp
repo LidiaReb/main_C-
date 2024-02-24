@@ -3,15 +3,16 @@
 #include <random>
 #include <fstream>
 
-void liner_finer(int long long *arr, int long long N, int long long a){
+int liner_finder(int long long *arr, int long long N, int long long a){
     for(int long long i=0; i != N; ++i){
         if(arr[i] == a){
-            break;
+            return 0;
         }
     }
+    return 0;
 }
 
-void binary_finder(int long long *arr, int long long N, int long long a){
+int binary_finder(int long long *arr, int long long N, int long long a){
     int long long l = 0, r = N-1;
     while (r > l) {
         int long long m = (l+r)/2;
@@ -20,22 +21,24 @@ void binary_finder(int long long *arr, int long long N, int long long a){
         } else if (arr[m] > a) {
             r = m - 1;
         } else {
-            break;
+            return 0;
         }
     }
+    return 0;
 }
 
-void sum(int long long *arr, int long long N, int long long a){
+int sum(int long long *arr, int long long N, int long long a){
     for(int long long i=0; i != N; ++i){
         for(int long long j=0; j != N; ++j){
             if(arr[i]+arr[j] == a){
-                break;
+                return 0;
             }
         }
     }
+    return 0;
 }
 
-void sum_sort(int long long *arr, int long long N, int long long a){
+int sum_sort(int long long *arr, int long long N, int long long a){
     int long long l = 0, r = N-1; 
     while (r > l){
         if (arr[l] + arr[r] < a) {
@@ -43,9 +46,10 @@ void sum_sort(int long long *arr, int long long N, int long long a){
         } else if (arr[l] + arr[r] > a) {
             r -= 1;
         } else {
-            break;
+            return 0;
         }
     }
+    return 0;
 }
 
 void A_strategy(int long long *arr, int long long N, int long long a){
@@ -86,13 +90,6 @@ void C_strategy(int long long *arr, int long long *k, int long long N, int long 
     }
 }
 
-void clean_file(std::string name){
-    std::ofstream out;
-    out.open(name);
-    out << "";
-    out.close(); 
-}
-
 void sort(int long long *arr, int long long N){
     for(int long long i = 1; i != N; ++i){
         for(int long long j = 0; j != N-i; ++j){
@@ -106,7 +103,7 @@ void sort(int long long *arr, int long long N){
 
 }
 
-void experiment_of_function(int long long N, std::string name, bool arr_sort, bool worst){
+int experiment_of_function(int long long N, std::string name, bool arr_sort, bool worst){
 
     int long long *arr = new int long long[N];
 
@@ -137,9 +134,11 @@ void experiment_of_function(int long long N, std::string name, bool arr_sort, bo
         out.close(); 
     }
 
+    delete [] arr;
+    return 0;
 }
 
-void experiment_of_function_new(int long long N, std::string name, bool arr_sort, bool worst, bool regular){
+int experiment_of_function_new(int long long N, std::string name, bool arr_sort, bool worst, bool regular){
 
     int long long *arr = new int long long[N];
     int long long *k = new int long long[N];
@@ -174,10 +173,10 @@ void experiment_of_function_new(int long long N, std::string name, bool arr_sort
             out.close(); 
         }
     } else {
-    int long long *arr_copy = new int long long[N];
-    for (unsigned counter = N; counter != -1; --counter)
-        arr_copy[counter] = arr[counter];
-    sort(arr_copy, N);
+        int long long *arr_copy = new int long long[N];
+        for (unsigned counter = N; counter != -1; --counter)
+            arr_copy[counter] = arr[counter];
+        sort(arr_copy, N);
 
         std:: uniform_int_distribution <unsigned long long> dstr0(0, N/5);
         for (unsigned counter = 100; counter != 0; --counter){ // делаем по 100 измерений времени
@@ -195,7 +194,11 @@ void experiment_of_function_new(int long long N, std::string name, bool arr_sort
             out << N << ";" << time << std:: endl;
             out.close(); 
         }
+        delete [] arr_copy;
     }
+    delete [] arr;
+    delete [] k;
+    return 0;
 }
 
 int main() {
@@ -203,9 +206,8 @@ int main() {
 int long long  N_0 = 1e3; // cоздаём массив длины N
 std::string name = "C_ireg.txt";
 
-clean_file(name);
 std::ofstream out;
-out.open(name, std::ios::app);
+out.open(name);
 out << "N;time" << std:: endl;
 out.close(); 
 
