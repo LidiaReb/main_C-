@@ -146,9 +146,9 @@ int experiment_of_function_new(int long long N, std::string name, bool arr_sort,
     unsigned long long seed = time(0);
     std:: default_random_engine rng(seed);
     std:: uniform_int_distribution <int long long> dstr(-1e10, 1e10); // пределы целых чисел в массиве - (-1e10, 1e10)
-    for (unsigned counter = N; counter != -1; --counter)
+    for (unsigned counter = N; counter != 0; --counter)
         arr[counter] = dstr(rng);
-    for (unsigned counter = N; counter != -1; --counter)
+    for (unsigned counter = N; counter != 0; --counter)
         k[counter] = 0;
     if (arr_sort){
         sort(arr, N);
@@ -174,7 +174,7 @@ int experiment_of_function_new(int long long N, std::string name, bool arr_sort,
         }
     } else {
         int long long *arr_copy = new int long long[N];
-        for (unsigned counter = N; counter != -1; --counter)
+        for (unsigned counter = N; counter != 0; --counter)
             arr_copy[counter] = arr[counter];
         sort(arr_copy, N);
 
